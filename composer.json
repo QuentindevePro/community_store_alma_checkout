@@ -1,0 +1,5 @@
+{
+    "require": {
+        "alma/alma-php-client": "^2.0"
+    }
+}
