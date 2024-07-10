@@ -1,6 +1,6 @@
 <?php
 
-namespace Concrete\Package\CommunityStoreStripeCheckout\Src\CommunityStore\Payment\Methods\CommunityStoreAlmaCheckout;
+namespace Concrete\Package\CommunityStoreAlmaCheckout\Src\CommunityStore\Payment\Methods\CommunityStoreAlmaCheckout;
 
 use Concrete\Core\Support\Facade\Config;
 use Concrete\Package\CommunityStore\Src\CommunityStore\Payment\Method as StorePaymentMethod;
