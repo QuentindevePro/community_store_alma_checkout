@@ -56,6 +56,11 @@ class CommunityStoreAlmaCheckoutPaymentMethod extends StorePaymentMethod
         Config::save($this::LIVE_PRIVATE_KEY, $data["almaCheckoutLivePrivateApiKey"]);
     }
 
+    public function validate($args, $e)
+    {
+        return $e;
+    }
+
     public function getPaymentMaximum()
     {
         $defaultMax = 1_000_000; // 1 Million
