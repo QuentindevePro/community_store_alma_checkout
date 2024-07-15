@@ -1,5 +1,12 @@
 {
     "require": {
-        "alma/alma-php-client": "^2.0"
-    }
+        "si3b/alma-php-client": "dev-main"
+    },
+
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/QuentindevePro/alma-php-client/"
+        }
+    ]
 }
