@@ -6,6 +6,7 @@ use Concrete\Core\Support\Facade\Config;
 use Concrete\Package\CommunityStore\Src\CommunityStore\Payment\Method as StorePaymentMethod;
 use Alma\API\Client as AlmaClient;
 use Concrete\Core\Routing\Redirect;
+use Concrete\Core\Support\Facade\Log;
 use Concrete\Core\Support\Facade\Session;
 use Concrete\Package\CommunityStore\Src\CommunityStore\Order\Order;
 use Concrete\Package\CommunityStore\Src\CommunityStore\Order\OrderItem;
@@ -81,18 +82,24 @@ class CommunityStoreAlmaCheckoutPaymentMethod extends StorePaymentMethod
         else return $min;
     }
 
+    public function checkoutForm()
+    {
+        $this->set("alma_merchant_id", Config::get($this::MERCHANT_ID));
+        $this->set("alma_mode", Config::get($this::MODE));
+    }
+
     public function createSession()
     {
         // Récupère l'order. Si l'order n'existe pas, redirige vers la page d'accueil
         /** @var Order $order */
-        $order = Order::getByID(Session::get("orderID"));
-        if (!$order) Redirect::to("/");
+        $order = Order::getByID(2); // TODO: Comment récupérer la commande ?
 
         $orderItems = $order->getOrderItems()->toArray();
         $amountInCents = round(array_reduce($orderItems, function ($acc, OrderItem $item) {
             return $acc + $item->getPricePaid() * 100;
         }, 0));
 
+        // TODO: Les adresses ne sont pas encore disponibles à ce moment-là
         $billingAddress = [
             "first_name"  => $order->getAttribute("billing_first_name"),
             "last_name"   => $order->getAttribute("billing_last_name"),
@@ -107,10 +114,10 @@ class CommunityStoreAlmaCheckoutPaymentMethod extends StorePaymentMethod
             "first_name"  => $order->getAttribute("shipping_first_name"),
             "last_name"   => $order->getAttribute("shipping_last_name"),
             "email"       => $order->getAttribute("email"),
-            "line1"       => $order->getAttribute("shipping_address")->address1,
-            "postal_code" => $order->getAttribute("shipping_address")->postal_code,
-            "city"        => $order->getAttribute("shipping_address")->city,
-            "country"     => $order->getAttribute("shipping_address")->country,
+            "line1"       => $order->getAttribute("billing_address")->address1,
+            "postal_code" => $order->getAttribute("billing_address")->postal_code,
+            "city"        => $order->getAttribute("billing_address")->city,
+            "country"     => $order->getAttribute("billing_address")->country,
         ];
 
         $mode = Config::get($this::MODE);
@@ -125,16 +132,14 @@ class CommunityStoreAlmaCheckoutPaymentMethod extends StorePaymentMethod
             "test" => AlmaClient::TEST_MODE
         };
 
-        $amountInCents = 10000; // TODO: Calculer proprement
-
         $almaClient = new AlmaClient($secretKey, $almaMode);
         $payment = $almaClient->payments->create(
             [
-                "origin" => "online",
+                "origin" => "online_in_page",
                 "payment" => [
                     "return_url" => "/checkout/complete",
                     "ipn_callback_url" => "idk", // TODO: Implement IPN callback
-                    "purchase_amount" => 10000,
+                    "purchase_amount" => $amountInCents,
                     "installments_count" => 4, // TODO: ???
                     "locale" => "fr", // TODO: Mettre la locale du client
 
@@ -161,7 +166,6 @@ class CommunityStoreAlmaCheckoutPaymentMethod extends StorePaymentMethod
             ]
         );
 
-        header("Location: " . $payment->url);
-
+        echo json_encode($payment);
     }
 }
