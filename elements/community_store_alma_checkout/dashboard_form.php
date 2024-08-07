@@ -21,6 +21,10 @@ use Concrete\Core\Support\Facade\Url;
 </div>
 
 <div class="form-group">
+    <?= $form->label("almaCheckoutMode", t("Mode")) ?>
+    <?= $form->select("almaCheckoutMode", ["test" => t("Test"), "live" => t("Live")], $almaCheckoutMode) ?>
+
+<div class="form-group">
     <?= $form->label("almaCheckoutTestPrivateApiKey", t("Test Private API Key")) ?>
     <?= $form->text("almaCheckoutTestPrivateApiKey", $almaCheckoutTestPrivateApiKey) ?>
 </div>

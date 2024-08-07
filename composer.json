@@ -6,7 +6,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/QuentindevePro/alma-php-client/"
+            "url": "https://github.com/QuentindevePro/alma-php-client"
         }
     ]
 }

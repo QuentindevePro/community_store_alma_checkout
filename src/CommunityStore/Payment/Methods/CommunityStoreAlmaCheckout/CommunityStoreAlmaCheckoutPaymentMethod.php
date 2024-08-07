@@ -37,8 +37,9 @@ class CommunityStoreAlmaCheckoutPaymentMethod extends StorePaymentMethod
         $this->set("almaCheckoutMaximum", Config::get($this::MAXIMUM_CHECKOUT));
         
         $this->set("almaCheckoutTestPrivateApiKey", Config::get($this::TEST_PRIVATE_KEY));
-        
         $this->set("almaCheckoutLivePrivateApiKey", Config::get($this::LIVE_PRIVATE_KEY));
+
+        $this->set("almaCheckoutMode", Config::get($this::MODE));
     }
 
     public function save(array $data = [])
@@ -128,7 +129,8 @@ class CommunityStoreAlmaCheckoutPaymentMethod extends StorePaymentMethod
 
         $almaMode = match ($mode) {
             "live" => AlmaClient::LIVE_MODE,
-            "test" => AlmaClient::TEST_MODE
+            "test" => AlmaClient::TEST_MODE,
+            default => AlmaClient::TEST_MODE
         };
 
         $almaClient = new AlmaClient($secretKey, $almaMode);
