@@ -21,18 +21,8 @@ use Concrete\Core\Support\Facade\Url;
 </div>
 
 <div class="form-group">
-    <?= $form->label("almaCheckoutTestPublicApiKey", t("Test Public API Key")) ?>
-    <?= $form->text("almaCheckoutTestPublicApiKey", $almaCheckoutTestPublicApiKey) ?>
-</div>
-
-<div class="form-group">
     <?= $form->label("almaCheckoutTestPrivateApiKey", t("Test Private API Key")) ?>
     <?= $form->text("almaCheckoutTestPrivateApiKey", $almaCheckoutTestPrivateApiKey) ?>
-</div>
-
-<div class="form-group">
-    <?= $form->label("almaCheckoutLivePublicApiKey", t("Live API Key")) ?>
-    <?= $form->text("almaCheckoutLivePublicApiKey", $almaCheckoutLivePublicApiKey) ?>
 </div>
 
 <div class="form-group">
