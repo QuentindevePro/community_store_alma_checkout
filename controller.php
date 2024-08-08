@@ -18,8 +18,8 @@ class Controller extends Package
     public function on_start()
     {
         require __DIR__ . '/vendor/autoload.php';
-        Route::register('/checkout/almacheckoutcreatesession','\Concrete\Package\CommunityStoreAlmaCheckout\Src\CommunityStore\Payment\Methods\CommunityStoreAlmaCheckout\CommunityStoreAlmaCheckoutPaymentMethod::createSession');
-        Route::register('/checkout/almacheckoutresponse','\Concrete\Package\CommunityStoreAlmaCheckout\Src\CommunityStore\Payment\Methods\CommunityStoreAlmaCheckout\CommunityStoreAlmaCheckoutPaymentMethod::chargeResponse');
+        Route::register('/checkout/alma/create_session','\Concrete\Package\CommunityStoreAlmaCheckout\Src\CommunityStore\Payment\Methods\CommunityStoreAlmaCheckout\CommunityStoreAlmaCheckoutPaymentMethod::createSession');
+        Route::register('/checkout/alma/ipn_callback','\Concrete\Package\CommunityStoreAlmaCheckout\Src\CommunityStore\Payment\Methods\CommunityStoreAlmaCheckout\CommunityStoreAlmaCheckoutPaymentMethod::ipnCallback');
     }
 
     protected $pkgAutoloaderRegistries = [

@@ -8,15 +8,13 @@ extract($vars);
 /** @var Payment $payment */
 ?>
 
-<script src="https://cdn.jsdelivr.net/npm/@alma/in-page@2.x/dist/index.umd.js"></script>
 <script>
     $.getScript("https://cdn.jsdelivr.net/npm/@alma/in-page@2.x/dist/index.umd.js").done(() => {
-        $.ajax({
-            url: "<?= \URL::to("/checkout/almacheckoutcreatesession") ?>",
-            type: "GET",
-            cache: false,
-            dataType: 'json',
-            success: (payment) => {
+        $.post(
+            "<?= \URL::to("/checkout/alma/create_session") ?>", {
+                installments_count: 4
+            },
+            (payment) => {
                 console.log("Request successful");
                 const inPage = Alma.InPage.initialize({
                     merchantId: payment.merchant_id,
@@ -26,18 +24,17 @@ extract($vars);
                     environment: "<?= $alma_mode ?>",
                 });
 
-                document.querySelector("#pay-button").addEventListener("click", () => {
+                document.querySelector("#alma-pay-btn").addEventListener("click", () => {
                     inPage.startPayment({
                         paymentId: payment.id
                     });
                 });
             }
-        }).fail((jqXHR, textStatus, errorThrown) => {
+        ).fail((jqXHR, textStatus, errorThrown) => {
             alert("Error while fetching Alma payment session: " + errorThrown);
         });
-
     });
 </script>
 
 <div id="alma-in-page"></div>
-<button id="pay-button"><?= t("Checkout") ?></button>
+<span class="btn btn-primary" id="alma-pay-btn">Payer en 4x avec Alma</span>
