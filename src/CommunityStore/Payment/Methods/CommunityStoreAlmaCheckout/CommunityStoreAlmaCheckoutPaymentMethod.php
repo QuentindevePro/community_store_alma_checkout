@@ -21,18 +21,18 @@ use Illuminate\Support\Facades\URL;
 
 class CommunityStoreAlmaCheckoutPaymentMethod extends StorePaymentMethod
 {
-    const MERCHANT_ID = "community_store_alma_checkout.merchant_id";
+    public const MERCHANT_ID = "community_store_alma_checkout.merchant_id";
 
-    const MINIMUM_CHECKOUT = "community_store_alma_checkout.minimum_checkout";
-    const MAXIMUM_CHECKOUT = "community_store_alma_checkout.maximum_checkout";
+    public const MINIMUM_CHECKOUT = "community_store_alma_checkout.minimum_checkout";
+    public const MAXIMUM_CHECKOUT = "community_store_alma_checkout.maximum_checkout";
 
-    const TEST_PRIVATE_KEY = "community_store_alma_checkout.test_private_key";
-    const LIVE_PRIVATE_KEY = "community_store_alma_checkout.live_private_key";
+    public const TEST_PRIVATE_KEY = "community_store_alma_checkout.test_private_key";
+    public const LIVE_PRIVATE_KEY = "community_store_alma_checkout.live_private_key";
 
-    const MIN_INSTALLMENTS = "community_store_alma_checkout.minimum_installments";
-    const MAX_INSTALLMENTS = "community_store_alma_checkout.maximum_installments";
+    public const MIN_INSTALLMENTS = "community_store_alma_checkout.minimum_installments";
+    public const MAX_INSTALLMENTS = "community_store_alma_checkout.maximum_installments";
 
-    const MODE = "community_store_alma_checkout.mode";
+    public const MODE = "community_store_alma_checkout.mode";
 
     public function getName()
     {
@@ -87,9 +87,11 @@ class CommunityStoreAlmaCheckoutPaymentMethod extends StorePaymentMethod
         $defaultMax = 1_000_000; // TODO: Maybe Alma has real limits ?
         $max = Config::get($this::MAXIMUM_CHECKOUT);
 
-        if (!ctype_digit($max)) return $defaultMax;
-
-        else return $max;
+        if (!ctype_digit($max)) {
+            return $defaultMax;
+        } else {
+            return $max;
+        }
     }
 
     public function getPaymentMinimum()
@@ -97,9 +99,11 @@ class CommunityStoreAlmaCheckoutPaymentMethod extends StorePaymentMethod
         $defaultMin = 10_000; // TODO: Maybe Alma has real limits ? IIRC min is 50
         $min = Config::get($this::MINIMUM_CHECKOUT);
 
-        if (!ctype_digit($min)) return $defaultMin;
-
-        else return $min;
+        if (!ctype_digit($min)) {
+            return $defaultMin;
+        } else {
+            return $min;
+        }
     }
 
     public function checkoutForm()
@@ -121,7 +125,9 @@ class CommunityStoreAlmaCheckoutPaymentMethod extends StorePaymentMethod
         $pm = StorePaymentMethod::getByHandle("community_store_alma_checkout");
         $order = Order::add($pm, null, "incomplete");
 
-        if (!isset($order)) return Redirect::to("/cart");
+        if (!isset($order)) {
+            return Redirect::to("/cart");
+        }
 
         $amountInCents = intval(Calculator::getGrandTotal() * 100);
         $customer = new Customer();
@@ -199,8 +205,9 @@ class CommunityStoreAlmaCheckoutPaymentMethod extends StorePaymentMethod
                 ]
             );
 
-            if (isset($payment->message))
+            if (isset($payment->message)) {
                 http_response_code(500);
+            }
 
             echo json_encode($payment);
         } catch (RequestError $e) {

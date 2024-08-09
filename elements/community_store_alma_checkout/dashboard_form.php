@@ -2,7 +2,7 @@
 
 use Concrete\Core\Form\Service\Form;
 
- defined("C5_EXECUTE") or die("Access Denied.");
+defined("C5_EXECUTE") or die("Access Denied.");
 extract($vars);
 
 /** @var Form $form */
