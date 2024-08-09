@@ -2,8 +2,10 @@
     "require": {
         "alma/alma-php-client": "^2.1"
     },
-
     "provide": {
         "psr/log": "*"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.62"
     }
 }
